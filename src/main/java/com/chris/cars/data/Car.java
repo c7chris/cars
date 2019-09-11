@@ -6,6 +6,7 @@ package com.chris.cars.data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author chris
@@ -18,10 +19,13 @@ public class Car {
 	@GeneratedValue
 	private int id;
 	
+	@NotBlank(message = "Make is mandatory")
 	private String make;
 	
+	@NotBlank(message = "Model is mandatory")
 	private String model;
 	
+	@NotBlank(message = "Colour is mandatory")
 	private String colour;
 	
 	private int year;
