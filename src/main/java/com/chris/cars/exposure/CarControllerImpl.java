@@ -92,4 +92,9 @@ public class CarControllerImpl implements CarController {
 				.body("Unable to process request.");
 	}
 
+	@Override
+	public ResponseEntity<String> updateCar(@RequestBody Car car) throws CarNotFoundException {
+		carService.updateCar(car);
+		return ResponseEntity.ok("Car with id "+ car.getId() +" updated");	}
+
 }

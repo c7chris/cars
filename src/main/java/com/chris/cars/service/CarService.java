@@ -17,5 +17,7 @@ public interface CarService {
 	Car retrieveCar(int id) throws CarNotFoundException;
 	
 	void removeCar(int id) throws CarNotFoundException;
+	
+	void updateCar(Car car) throws CarNotFoundException;
 
 }

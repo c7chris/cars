@@ -3,6 +3,8 @@
  */
 package com.chris.cars.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,14 @@ public class CarServiceImpl implements CarService {
 		carRepository.findById(id)
 		.orElseThrow(() -> new CarNotFoundException());
 		carRepository.deleteById(id);
+	}
+
+	@Override
+	public void updateCar(Car car) throws CarNotFoundException {
+		Car existingCar = carRepository.findById(car.getId())
+		.orElseThrow(() -> new CarNotFoundException());
+		existingCar.update(car);
+		carRepository.save(existingCar);
 	}
 
 }

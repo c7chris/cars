@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.chris.cars.data.Car;
@@ -30,4 +31,7 @@ public interface CarController {
 	@DeleteMapping(value = "/{id}")
 	ResponseEntity<String> removeCar(int id) throws CarNotFoundException;
 
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<String> updateCar(Car car) throws CarNotFoundException;
+	
 }

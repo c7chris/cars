@@ -3,6 +3,7 @@
  */
 package com.chris.cars.service;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -72,4 +73,21 @@ public class CarServiceImplTest {
 		Mockito.verify(carRepository, times(1)).deleteById(anyInt());
 	}
 
+	@Test
+	public void shouldUpdateCar() throws CarNotFoundException {
+		carService.updateCar(new Car());
+		Mockito.verify(carRepository, times(1)).save(any(Car.class));
+	}
+	
+	@Test
+	public void shouldNotUpdateNonExistantCar() {
+		Mockito.when(carRepository.findById(anyInt()))
+		.thenReturn(Optional.ofNullable(null));
+	
+		assertThatExceptionOfType(CarNotFoundException.class)
+		.isThrownBy(() -> { carService.updateCar(new Car()); }); 
+		
+		Mockito.verify(carRepository, times(0)).save(any(Car.class));
+	}
+	
 }

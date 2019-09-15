@@ -100,6 +100,23 @@ public class CarControllerImplTest {
 		
 	}
 
+	@Test
+	public void shouldUpdateCar() throws Exception {
+		Car car = createCar(1, "Black", "Hyundai", "Creta", 2018);
+		Mockito.doNothing().when(carService).updateCar(any(Car.class)); 
+
+		
+    	RequestBuilder requestBuilder = MockMvcRequestBuilders
+    			.put("/car")
+    			.content(CarToJSON(car))
+    			.contentType(MediaType.APPLICATION_JSON);
+    	
+    	MvcResult result = mvc.perform(requestBuilder).andReturn();
+    	MockHttpServletResponse response = result.getResponse();
+    	
+    	assertEquals(HttpStatus.OK.value(), response.getStatus());
+	}
+
 	private Car createCar(int id, String colour, String make, String model, int year) {
 		Car car = new Car();
 		car.setId(id);
