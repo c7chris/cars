@@ -1,37 +1,38 @@
 /**
  * 
  */
-package com.chris.cars.data;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-
-import org.springframework.util.StringUtils;
+package com.chris.cars.service.objects;
 
 /**
  * @author chris
  *
  */
-@Entity
-public class Car {
+public class CarResponse {
 
-	@Id
-	@GeneratedValue
 	private int id;
 	
-	@NotBlank(message = "Make is mandatory")
 	private String make;
 	
-	@NotBlank(message = "Model is mandatory")
-	private String model;
+	private Model model;
 	
-	@NotBlank(message = "Colour is mandatory")
 	private String colour;
 	
 	private int year;
-	
+
+	/**
+	 * @param id
+	 * @param make
+	 * @param colour
+	 * @param year
+	 */
+	public CarResponse(int id, String make, String colour, int year) {
+		super();
+		this.id = id;
+		this.make = make;
+		this.colour = colour;
+		this.year = year;
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -63,14 +64,14 @@ public class Car {
 	/**
 	 * @return the model
 	 */
-	public String getModel() {
+	public Model getModel() {
 		return model;
 	}
 
 	/**
 	 * @param model the model to set
 	 */
-	public void setModel(String model) {
+	public void setModel(Model model) {
 		this.model = model;
 	}
 
@@ -102,11 +103,4 @@ public class Car {
 		this.year = year;
 	}
 	
-	public void update(Car car) {
-		this.make = StringUtils.isEmpty(car.getMake()) ? this.make : car.getMake();
-		this.model = StringUtils.isEmpty(car.getModel()) ? this.model : car.getModel();
-		this.colour = StringUtils.isEmpty(car.getColour()) ? this.colour : car.getColour();
-		this.year = car.getYear() == 0? this.year : car.getYear();
-	}
-
 }

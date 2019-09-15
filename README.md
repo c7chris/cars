@@ -24,7 +24,48 @@ $ git clone https://github.com/c7chris/cars.git
 $ mvn spring-boot:run
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+3) Access the API
+
+Please refer to the Swagger documentation for details of the endpoints available: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+## Sample requests
+
+1) POST - create request
+
+```
+http://localhost:8080/car
+{
+	"make": "Nissan",
+	"model": "Altima",
+	"colour": "White",
+	"year": 1992
+}
+```
+
+2) GET - retrieve request
+
+```
+http://localhost:8080/car/1
+```
+
+3) PUT - update request
+
+```
+http://localhost:8080/car
+{
+	"id": 1,
+	"make": "Toyota",
+	"model": "Land Cruiser",
+	"colour": "White",
+	"year": 2015
+}
+```
+
+4) DELETE - remove request
+
+```
+http://localhost:8080/car/1
+```
 
 ## Running the tests
 

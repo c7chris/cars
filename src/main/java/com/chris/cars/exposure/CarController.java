@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.chris.cars.data.Car;
 import com.chris.cars.exception.CarNotFoundException;
+import com.chris.cars.service.objects.CarResponse;
 
 /**
  * @author chris
@@ -26,7 +27,7 @@ public interface CarController {
 	ResponseEntity<String> addCar(Car car);
 	
 	@GetMapping(value = "/{id}")
-	ResponseEntity<Object> retrieveCar(int id) throws CarNotFoundException;
+	ResponseEntity<CarResponse> retrieveCar(int id) throws CarNotFoundException;
 	
 	@DeleteMapping(value = "/{id}")
 	ResponseEntity<String> removeCar(int id) throws CarNotFoundException;

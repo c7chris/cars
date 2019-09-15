@@ -6,7 +6,6 @@ package com.chris.cars.exposure;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.UnexpectedTypeException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chris.cars.data.Car;
 import com.chris.cars.exception.CarNotFoundException;
 import com.chris.cars.service.CarService;
+import com.chris.cars.service.objects.CarResponse;
 
 /**
  * @author chris
@@ -44,17 +44,16 @@ public class CarControllerImpl implements CarController {
 
 	@Override
 	public ResponseEntity<String> addCar(@Valid @RequestBody Car car) {
-		carService.addCar(car);
+		Car addedCar = carService.addCar(car);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body("Car added");
+				.body("Car added with id: " + addedCar.getId());
 	}
 
 	@Override
-	public ResponseEntity<Object> retrieveCar(@PathVariable int id) throws CarNotFoundException {
-		Car car = null;
-		car = carService.retrieveCar(id);
+	public ResponseEntity<CarResponse> retrieveCar(@PathVariable int id) throws CarNotFoundException {
+		CarResponse carResponse = carService.retrieveCar(id);
 		return ResponseEntity.status(HttpStatus.FOUND)
-				.body(car);
+				.body(carResponse);
 	}
 
 	@Override
@@ -67,6 +66,11 @@ public class CarControllerImpl implements CarController {
 		return ResponseEntity.ok("Car with id "+ id +" removed");
 	}
 	
+	@Override
+	public ResponseEntity<String> updateCar(@RequestBody Car car) throws CarNotFoundException {
+		carService.updateCar(car);
+		return ResponseEntity.ok("Car with id "+ car.getId() +" updated");	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationExceptions(
@@ -91,10 +95,5 @@ public class CarControllerImpl implements CarController {
 		return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
 				.body("Unable to process request.");
 	}
-
-	@Override
-	public ResponseEntity<String> updateCar(@RequestBody Car car) throws CarNotFoundException {
-		carService.updateCar(car);
-		return ResponseEntity.ok("Car with id "+ car.getId() +" updated");	}
 
 }

@@ -6,7 +6,6 @@ package com.chris.cars.exposure;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +25,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.chris.cars.data.Car;
 import com.chris.cars.service.CarServiceImpl;
+import com.chris.cars.service.objects.CarResponse;
+import com.chris.cars.service.objects.Model;
 
 /**
  * @author chris
@@ -44,7 +45,7 @@ public class CarControllerImplTest {
     @Test
     public void shouldAddCar() throws Exception {
     	Car car = createCar(1, "Black", "Hyundai", "Creta", 2018);
-    	Mockito.doNothing().when(carService).addCar(any(Car.class));
+    	Mockito.when(carService.addCar(any(Car.class))).thenReturn(car);
     	
     	RequestBuilder requestBuilder = MockMvcRequestBuilders
     			.post("/car")
@@ -59,7 +60,8 @@ public class CarControllerImplTest {
     
     @Test
     public void shouldNotAddInvalidCar() throws Exception {
-    	Mockito.doNothing().when(carService).addCar(any(Car.class));
+    	Car car = createCar(1, "Black", "Hyundai", "Creta", 2018);
+    	Mockito.when(carService.addCar(any(Car.class))).thenReturn(car);
     	
     	RequestBuilder requestBuilder = MockMvcRequestBuilders
     			.post("/car")
@@ -74,15 +76,19 @@ public class CarControllerImplTest {
 	
 	@Test
 	public void shouldRetrieveCar() throws Exception {
-		Car car = createCar(1, "Black", "Hyundai", "Creta", 2018);
-		Mockito.when(carService.retrieveCar(anyInt())).thenReturn(car);
+		CarResponse carResponse = new CarResponse(1, "Hyundai", "Black", 2018);
+		Model model = new Model("Creta", "carota,kreta,krita");
+		carResponse.setModel(model);
+		Mockito.when(carService.retrieveCar(anyInt())).thenReturn(carResponse);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/car/1")
 				.contentType(MediaType.APPLICATION_JSON);
 		
 		MvcResult result = mvc.perform(requestBuilder).andReturn();
 		
-		JSONAssert.assertEquals("{'id': 1,'make': 'Hyundai','model': 'Creta', 'colour': 'Black', 'year': 2018}", 
+		JSONAssert.assertEquals("{'id': 1,'make': 'Hyundai','model': "
+				+ "{'modelName': 'Creta','soundsLike': 'carota,kreta,krita'}, "
+				+ "'colour': 'Black', 'year': 2018}", 
 				result.getResponse().getContentAsString(), false);
 		assertEquals(HttpStatus.FOUND.value(), result.getResponse().getStatus());
 	}
@@ -96,7 +102,7 @@ public class CarControllerImplTest {
 		MvcResult result = mvc.perform(requestBuilder).andReturn();
 		
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
-		Mockito.verify(carService, times(1)).removeCar(anyInt());
+		Mockito.verify(carService).removeCar(anyInt());
 		
 	}
 
